@@ -1,0 +1,84 @@
+/* MySQL DBMS */
+
+CREATE DATABASE forum;
+
+USE forum;
+
+CREATE TABLE users (
+id_user int (10) AUTO_INCREMENT,
+name varchar (20) NOT NULL,
+email varchar (50) NOT NULL,
+password varchar (15) NOT NULL,
+PRIMARY KEY (id_user) 
+);
+
+CREATE TABLE topics (
+id_topic int (10) AUTO_INCREMENT,
+topic_name varchar (100) NOT NULL,
+id_author int (10) NOT NULL,
+PRIMARY KEY (id_topic),
+FOREIGN KEY (id_author) REFERENCES users (id_user)
+);
+
+CREATE TABLE posts (
+id_post int (10) AUTO_INCREMENT,
+message text NOT NULL,
+id_author int (10) NOT NULL,
+id_topic int (10) NOT NULL,
+PRIMARY KEY (id_post),
+FOREIGN KEY (id_author) REFERENCES users (id_user),
+FOREIGN KEY (id_topic) REFERENCES topics (id_topic)
+);
+
+INSERT INTO users (id_user, name, email, password) VALUES ('1', 'firstmemeber', 'first@example.net', '1111');
+INSERT INTO users (name, email, password) VALUES 
+('secondmemeber', 'second@example.com', '2222'),
+('thirdmemeber', 'third@example.net', '3333'),
+('fourthmemeber', 'fourth@example.com', '4444'),
+('fifthmemeber', 'fifth@example.ru', '5555');
+
+INSERT INTO topics (id_topic, topic_name, id_author) VALUES ('1', 'funnytopic', '1');
+INSERT INTO topics (topic_name, id_author) VALUES 
+('uninterestingtopic', '2'),
+('interestingtopic', '1'),
+('trivial', '4');
+
+INSERT INTO posts (id_post, message, id_author, id_topic) VALUES ('1', 'common message', '1', '1');
+INSERT INTO posts (message, id_author, id_topic) VALUES 
+('expression of opinion', '2', '4'), 
+('affirmative answer', '3', '1'),
+('expression of opinion', '2', '1');
+
+
+SELECT email FROM users;
+
+SELECT * FROM topics WHERE topic_name LIKE '%ivi%';
+
+SELECT message FROM posts WHERE id_author IN (SELECT id_author FROM topics WHERE topic_name='funnytopic');
+
+
+SELECT posts.message, topics.topic_name, users.name FROM posts, topics, users 
+WHERE posts.id_author=users.id_user AND posts.id_topic=topics.id_topic;
+
+
+SELECT COUNT(*) AS numberrows FROM users;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
